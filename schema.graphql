@@ -1,0 +1,43 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Mutation {
+  addPoint(input: AddPointInput!): Boolean!
+  createUser(input: CreateUserInput!): User
+  deleteUser(input: DeleteUserInput!): Boolean!
+  resetAllUsers: Boolean!
+  subPoint(input: SubPointInput!): Boolean!
+}
+
+type Query {
+  getUser(id: ID!): User
+  listUsers: [User]
+}
+
+type User {
+  address: String
+  age: Int
+  id: ID!
+  name: String
+  points: Int
+}
+
+input AddPointInput {
+  id: ID!
+}
+
+input CreateUserInput {
+  address: String
+  age: Int
+  name: String
+}
+
+input DeleteUserInput {
+  id: ID!
+}
+
+input SubPointInput {
+  id: ID!
+}
