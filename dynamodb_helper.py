@@ -76,9 +76,9 @@ class UserTable:
             return None
 
         return User(
-            id=item['id'],
-            name=item['name'],
-            age=int(item['age']),
-            address=item['address'],
-            points=int(item['points'])
+            id=item['id'] if 'id' in item else None,
+            name=item['name'] if 'name' in item else None,
+            age=int(item['age']) if 'age' in item else None,
+            address=item['address'] if 'address' in item else None,
+            points=int(item['points']) if 'points' in item else None
         )

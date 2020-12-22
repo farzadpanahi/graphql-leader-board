@@ -1,5 +1,6 @@
+import dataclasses
 from dataclasses import dataclass
-
+import json
 
 @dataclass
 class User:
@@ -20,3 +21,9 @@ class User:
             return True
 
         return False
+
+    def to_json(self):
+        return json.dumps(dataclasses.asdict(self))
+
+    def to_dict(self):
+        return dataclasses.asdict(self)
