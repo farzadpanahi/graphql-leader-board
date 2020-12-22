@@ -23,7 +23,7 @@ class UserTable:
         except ClientError as e:
             print(e.response['Error']['Message'])
         else:
-            return self._parse_ddb_item(response['Item'])
+            return self._parse_ddb_item(response['Item']) if 'Item' in response else None
 
     def get_all_users(self):
         try:
@@ -31,7 +31,7 @@ class UserTable:
         except ClientError as e:
             print(e.response['Error']['Message'])
         else:
-            return [self._parse_ddb_item(item) for item in response['Items']]
+            return [self._parse_ddb_item(item) for item in response['Items']] if 'Items' in response else None
 
     def put_user(self, user: User):
         try:
@@ -42,6 +42,20 @@ class UserTable:
                 'address': user.address,
                 'points': user.points
             })
+        except ClientError as e:
+            print(e.response['Error']['Message'])
+            return False
+
+        return response['ResponseMetadata']['HTTPStatusCode'] == 200
+
+    def delete_user(self, user_id):
+        try:
+            response = self.table.delete_item(
+                Key={
+                    'id': user_id
+                },
+                ConditionExpression="attribute_exists(id)"
+            )
         except ClientError as e:
             print(e.response['Error']['Message'])
             return False

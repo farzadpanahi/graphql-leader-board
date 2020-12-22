@@ -147,3 +147,31 @@ class TestUserTable(TestCase):
         all_user_ids = set([user.id for user in users])
 
         self.assertTrue(new_user_ids.issubset(all_user_ids))
+
+    def test_delete_user(self):
+        user_table = UserTable(
+            region=self.config['dynamodb']['region'],
+            table_name=self.config['dynamodb']['table']
+        )
+
+        user_to_put = User(
+            id=str(uuid.uuid4()),
+            name='test-user',
+            address='nowhere',
+            age=83,
+            points=0
+        )
+
+        result = user_table.put_user(user=user_to_put)
+        self.assertTrue(result)
+
+        user_read = user_table.get_user(user_id=user_to_put.id)
+        print(user_read)
+        self.assertEqual(user_to_put, user_read)
+
+        result = user_table.delete_user(user_to_put.id)
+        self.assertTrue(result)
+
+        user_read = user_table.get_user(user_id=user_to_put.id)
+        print(user_read)
+        self.assertIsNone(user_read)
