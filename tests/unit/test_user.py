@@ -31,6 +31,20 @@ class TestUser(TestCase):
         self.assertTrue(result)
         self.assertEqual(user.points, 23)
 
+    def test_add_point_points_is_none(self):
+        user = User(
+            id='123',
+            name='test name',
+            address='earth',
+            age=32,
+            points=None
+        )
+
+        result = user.add_point()
+
+        self.assertTrue(result)
+        self.assertEqual(user.points, 1)
+
     def test_sub_point_new_obj(self):
         user = User(
             id='123',
@@ -72,4 +86,16 @@ class TestUser(TestCase):
         self.assertTrue(result)
         self.assertEqual(user.points, 21)
 
+    def test_sub_point_points_is_none(self):
+        user = User(
+            id='123',
+            name='test name',
+            address='earth',
+            age=32,
+            points=None
+        )
 
+        result = user.sub_point()
+
+        self.assertFalse(result)
+        self.assertEqual(user.points, None)
