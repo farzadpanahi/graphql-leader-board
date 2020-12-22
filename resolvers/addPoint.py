@@ -11,3 +11,5 @@ def addPoint(input, event):
 
     if result:
         return user_table.update_user(user)
+
+    return False

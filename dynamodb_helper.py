@@ -25,6 +25,14 @@ class UserTable:
         else:
             return self._parse_ddb_item(response['Item'])
 
+    def get_all_users(self):
+        try:
+            response = self.table.scan()  # TODO: this is just a temp solution; 10MB limit
+        except ClientError as e:
+            print(e.response['Error']['Message'])
+        else:
+            return [self._parse_ddb_item(item) for item in response['Items']]
+
     def put_user(self, user: User):
         try:
             response = self.table.put_item(Item={

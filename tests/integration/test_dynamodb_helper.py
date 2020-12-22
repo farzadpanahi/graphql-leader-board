@@ -95,3 +95,55 @@ class TestUserTable(TestCase):
         print(user_read)
 
         self.assertEqual(user_to_update, user_read)
+
+    def test_get_all_users(self):
+        user_table = UserTable(
+            region=self.config['dynamodb']['region'],
+            table_name=self.config['dynamodb']['table']
+        )
+
+        new_user_ids = set()
+
+        user_to_put = User(
+            id=str(uuid.uuid4()),
+            name='user1',
+            address='nowhere',
+            age=83,
+            points=0
+        )
+
+        result = user_table.put_user(user=user_to_put)
+
+        self.assertTrue(result)
+        new_user_ids.add(user_to_put.id)
+
+        user_to_put = User(
+            id=str(uuid.uuid4()),
+            name='user2',
+            address='nowhere',
+            age=83,
+            points=0
+        )
+
+        result = user_table.put_user(user=user_to_put)
+
+        self.assertTrue(result)
+        new_user_ids.add(user_to_put.id)
+
+        user_to_put = User(
+            id=str(uuid.uuid4()),
+            name='user3',
+            address='nowhere',
+            age=83,
+            points=0
+        )
+
+        result = user_table.put_user(user=user_to_put)
+
+        self.assertTrue(result)
+        new_user_ids.add(user_to_put.id)
+
+        users = user_table.get_all_users()
+        all_user_ids = set([user.id for user in users])
+
+        self.assertTrue(new_user_ids.issubset(all_user_ids))
